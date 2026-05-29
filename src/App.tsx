@@ -20,7 +20,7 @@ import {
   X,
   Youtube,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 const links = {
@@ -36,6 +36,8 @@ const links = {
   email: "mailto:blowupstudio.booking@gmail.com",
   maps: "https://maps.google.com/maps?q=Hovedgaden%20440%2C%202640%20Hedehusene&t=m&z=12&output=embed&iwloc=near",
 };
+
+const asset = (path: string) => `${import.meta.env.BASE_URL}assets/${path}`;
 
 const ctas = [
   {
@@ -102,31 +104,31 @@ const videos = [
     title: "ON THE SPOT - Nikz",
     id: "qIq5klvtMxk",
     duration: "1:25",
-    thumb: "/assets/site/youtube-nikz.jpg",
+    thumb: asset("site/youtube-nikz.jpg"),
   },
   {
     title: "ON THE SPOT - Micass",
     id: "9FN129SrMjI",
     duration: "1:37",
-    thumb: "/assets/site/youtube-micass.jpg",
+    thumb: asset("site/youtube-micass.jpg"),
   },
   {
     title: "ON THE SPOT - ZZZ",
     id: "0Fz6g9WdRjs",
     duration: "1:00",
-    thumb: "/assets/site/youtube-zzz.jpg",
+    thumb: asset("site/youtube-zzz.jpg"),
   },
   {
     title: "ON THE SPOT - Yayo",
     id: "Dz77YzqPU5k",
     duration: "1:45",
-    thumb: "/assets/site/youtube-yayo.jpg",
+    thumb: asset("site/youtube-yayo.jpg"),
   },
   {
     title: "Micass X BLOWUP studio - STJERNER I BOKSEN | EP 1",
     id: "r5BuyJc2jDM",
     duration: "8:06",
-    thumb: "/assets/site/youtube-stjerner.jpg",
+    thumb: asset("site/youtube-stjerner.jpg"),
   },
 ];
 
@@ -154,11 +156,11 @@ const reviews = [
 ];
 
 const gallery = [
-  "/assets/site/gallery-1.jpg",
-  "/assets/site/gallery-2.jpg",
-  "/assets/site/gallery-3.jpg",
-  "/assets/site/gallery-4.jpg",
-  "/assets/site/gallery-5.jpg",
+  asset("site/gallery-1.jpg"),
+  asset("site/gallery-2.jpg"),
+  asset("site/gallery-3.jpg"),
+  asset("site/gallery-4.jpg"),
+  asset("site/gallery-5.jpg"),
 ];
 
 function ExternalAnchor({
@@ -193,7 +195,7 @@ function Header() {
   return (
     <header className="site-header">
       <a className="brand" href="#top" onClick={closeMenu}>
-        <img src="/assets/site/blowup-icon.svg" alt="" />
+        <img src={asset("site/blowup-icon.svg")} alt="" />
         <span>BLOWUP studio</span>
       </a>
 
@@ -233,8 +235,8 @@ function Hero() {
     <section className="hero" id="top">
       <video
         className="hero-video"
-        src="/assets/site/studio-hero.mp4"
-        poster="/assets/site/youtube-nikz.jpg"
+        src={asset("site/studio-hero.mp4")}
+        poster={asset("site/youtube-nikz.jpg")}
         autoPlay
         muted
         loop
@@ -307,7 +309,7 @@ function StudioSection() {
           </div>
         </div>
         <div className="studio-portrait">
-          <img src="/assets/site/patrick.jpg" alt="Patrick fra BLOWUP studio" />
+          <img src={asset("site/patrick.jpg")} alt="Patrick fra BLOWUP studio" />
           <div className="portrait-caption">
             <BadgeCheck size={18} />
             Patrick Forslund, producer og mix/master-engineer
@@ -501,7 +503,7 @@ function SocialSection() {
   return (
     <section className="social-section">
       <video
-        src="/assets/site/studio-social.mp4"
+        src={asset("site/studio-social.mp4")}
         autoPlay
         muted
         loop
@@ -539,7 +541,7 @@ function Footer() {
     <footer className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand">
-          <img src="/assets/site/blowup-icon.svg" alt="" />
+          <img src={asset("site/blowup-icon.svg")} alt="" />
           <div>
             <strong>BLOWUP studio</strong>
             <span>Alle rettigheder forbeholdes.</span>
@@ -566,7 +568,14 @@ function Footer() {
 
 export default function App() {
   return (
-    <>
+    <div
+      className="page-shell"
+      style={
+        {
+          "--page-pattern": `url(${asset("site/blowup-pattern.png")})`,
+        } as CSSProperties
+      }
+    >
       <Header />
       <main>
         <Hero />
@@ -578,6 +587,6 @@ export default function App() {
         <SocialSection />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

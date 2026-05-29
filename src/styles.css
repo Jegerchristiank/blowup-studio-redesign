@@ -29,9 +29,14 @@ body {
   margin: 0;
   min-width: 320px;
   color: var(--text);
+  background: var(--bg);
+}
+
+.page-shell {
+  min-height: 100vh;
   background:
     linear-gradient(rgba(5, 5, 5, 0.9), rgba(5, 5, 5, 0.9)),
-    url("/assets/site/blowup-pattern.png") center / 760px repeat;
+    var(--page-pattern) center / 760px repeat;
 }
 
 body,

@@ -310,6 +310,21 @@ function Hero() {
   );
 }
 
+function MobileActionStrip() {
+  return (
+    <section className="mobile-action-strip" aria-label="Andre handlinger">
+      <ExternalAnchor className="mobile-action-link" href={links.readyBeat}>
+        <Disc3 size={18} />
+        Køb færdigt beat
+      </ExternalAnchor>
+      <ExternalAnchor className="mobile-action-link" href={links.customBeat}>
+        <Music size={18} />
+        Custom beat
+      </ExternalAnchor>
+    </section>
+  );
+}
+
 function StudioSection() {
   return (
     <section className="section studio-section" id="studio">
@@ -652,6 +667,7 @@ export default function App() {
       <Header />
       <main>
         <Hero />
+        <MobileActionStrip />
         <StudioSection />
         <SessionFlowSection />
         <PricingSection />

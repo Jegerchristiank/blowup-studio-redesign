@@ -99,6 +99,29 @@ const pricing = [
   },
 ];
 
+const sessionFlow = [
+  {
+    title: "1. Retning",
+    text: "Vi finder vibe, reference og mål, så sessionen starter med en klar plan.",
+    icon: Music,
+  },
+  {
+    title: "2. Optagelse",
+    text: "Patrick coacher flow, energi og delivery, mens takes bliver bygget hurtigt op.",
+    icon: Mic,
+  },
+  {
+    title: "3. Sound",
+    text: "Beat, vokalchain, mix og master formes omkring artisten, ikke omvendt.",
+    icon: Headphones,
+  },
+  {
+    title: "4. Release",
+    text: "Du går derfra med en sang, der føles tættere på færdig end bare en demo.",
+    icon: CheckCircle2,
+  },
+];
+
 const videos = [
   {
     title: "ON THE SPOT - Nikz",
@@ -213,6 +236,9 @@ function Header() {
         <a href="#studio" onClick={closeMenu}>
           Studio
         </a>
+        <a href="#flow" onClick={closeMenu}>
+          Flow
+        </a>
         <a href="#priser" onClick={closeMenu}>
           Priser
         </a>
@@ -250,9 +276,9 @@ function Hero() {
         </div>
         <h1>BLOWUP studio</h1>
         <p>
-          Fra ide til release-klar sang. Patrick og teamet hjælper med beats,
-          vokal, mix, master, flow og tekst, så projektet føles skarpt fra
-          første take.
+          Fra ide til release-klar sang. Patrick og teamet hjælper med beat,
+          vokal, coaching, mix og master, så projektet føles skarpt fra første
+          take.
         </p>
         <div className="hero-actions" aria-label="Primære handlinger">
           {ctas.map((cta) => {
@@ -277,7 +303,7 @@ function Hero() {
         </div>
         <div>
           <strong>Alt-i-en</strong>
-          <span>Beat, coaching, mix</span>
+          <span>Beat, coaching og mix</span>
         </div>
       </div>
     </section>
@@ -296,6 +322,16 @@ function StudioSection() {
             tekster. Uanset om du er ny eller rutineret, får du en proces hvor
             pengene bruges på det, der faktisk løfter sangen.
           </p>
+          <div className="studio-stats" aria-label="BLOWUP studio styrker">
+            <div>
+              <strong>Pop</strong>
+              <span>Trap, drill, soul og dancehall</span>
+            </div>
+            <div>
+              <strong>FL Studio</strong>
+              <span>Plus erfaring i Cubase og liveinstrumenter</span>
+            </div>
+          </div>
           <div className="feature-list">
             <span>
               <Mic size={18} /> Vokal og flow
@@ -325,6 +361,39 @@ function StudioSection() {
   );
 }
 
+function SessionFlowSection() {
+  return (
+    <section className="section flow-section" id="flow">
+      <div className="section-inner">
+        <div className="section-heading">
+          <div>
+            <div className="section-kicker">Session flow</div>
+            <h2>Færre løse ideer. Mere færdig sang.</h2>
+          </div>
+          <ExternalAnchor className="button secondary compact" href={links.customBeat}>
+            <Music size={17} />
+            Tal om custom beat
+          </ExternalAnchor>
+        </div>
+        <div className="flow-grid">
+          {sessionFlow.map((step) => {
+            const Icon = step.icon;
+            return (
+              <article className="flow-card" key={step.title}>
+                <span>
+                  <Icon size={20} />
+                </span>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function PricingSection() {
   return (
     <section className="section prices-section" id="priser">
@@ -333,6 +402,10 @@ function PricingSection() {
           <div>
             <div className="section-kicker">Priser</div>
             <h2>Vælg pakken der passer til sangen.</h2>
+            <p className="section-lead">
+              Alle sessioner samler coaching, beat, optagelse og teknisk finish i
+              en tydelig proces.
+            </p>
           </div>
           <ExternalAnchor className="button primary compact" href={links.booking}>
             <Calendar size={17} />
@@ -580,6 +653,7 @@ export default function App() {
       <main>
         <Hero />
         <StudioSection />
+        <SessionFlowSection />
         <PricingSection />
         <ReleasesSection />
         <ArtistVideos />

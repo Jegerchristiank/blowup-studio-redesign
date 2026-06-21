@@ -56,7 +56,11 @@ class TestContact:
         assert r2.status_code == 200
         contacts = r2.json()
         assert isinstance(contacts, list)
-        match = [c for c in contacts if (c.get("id") == created_id or c.get("_id") == created_id)]
+        # After fix: each contact must expose `id` (NOT `_id`)
+        for c in contacts:
+            assert "_id" not in c, f"Response should NOT contain `_id`, got: {c}"
+            assert "id" in c and isinstance(c["id"], str) and len(c["id"]) > 0
+        match = [c for c in contacts if c.get("id") == created_id]
         assert len(match) == 1, f"Created contact not found in list (id={created_id})"
         c = match[0]
         assert c["name"] == payload["name"]

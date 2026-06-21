@@ -4,50 +4,35 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: "#050505",
-        surface: "#0E0E0F",
-        elevated: "#161618",
-        line: "rgba(255,255,255,0.08)",
-        lineStrong: "rgba(255,255,255,0.2)",
-        ash: "#8a8a8e",
-        bone: "#ededed",
-        signal: "#FF3B30",
-        signalDeep: "#E11D2E",
-        signalSoft: "#FF6A5A",
+        ink: "#0A0A0A",
+        surface: "#121214",
+        elevated: "#1A1A1D",
+        line: "rgba(255,255,255,0.09)",
+        lineStrong: "rgba(255,255,255,0.22)",
+        ash: "#9A9AA0",
+        bone: "#F4F4F4",
+        brand: "#FFD834",
+        brandDark: "#E6BE00",
       },
       fontFamily: {
-        display: ['"Clash Display"', "sans-serif"],
-        sans: ['"Satoshi"', "system-ui", "sans-serif"],
-        mono: ['"JetBrains Mono"', "monospace"],
-      },
-      letterSpacing: {
-        overline: "0.28em",
+        display: ['"Barlow Condensed"', "sans-serif"],
+        sans: ['"Inter"', "system-ui", "sans-serif"],
       },
       maxWidth: {
-        shell: "1400px",
+        shell: "1280px",
       },
       keyframes: {
         marquee: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
-        floaty: {
-          "0%,100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-8px)" },
-        },
         pulseDot: {
           "0%,100%": { opacity: "1", transform: "scale(1)" },
-          "50%": { opacity: "0.4", transform: "scale(0.7)" },
-        },
-        equalize: {
-          "0%,100%": { height: "30%" },
-          "50%": { height: "100%" },
+          "50%": { opacity: "0.3", transform: "scale(0.6)" },
         },
       },
       animation: {
-        marquee: "marquee 28s linear infinite",
-        marqueeFast: "marquee 18s linear infinite",
-        floaty: "floaty 5s ease-in-out infinite",
+        marquee: "marquee 30s linear infinite",
         pulseDot: "pulseDot 1.6s ease-in-out infinite",
       },
     },

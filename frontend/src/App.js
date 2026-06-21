@@ -17,12 +17,7 @@ import Footer from "./components/Footer";
 
 export default function App() {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.1,
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
-    });
+    const lenis = new Lenis({ duration: 1.05, smoothWheel: true });
     window.lenis = lenis;
     let raf;
     const loop = (t) => {

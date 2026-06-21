@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Play, Youtube } from "lucide-react";
 import Reveal from "./Reveal";
+import SectionHeader from "./SectionHeader";
 import { videos, links } from "../lib/data";
 
 export default function Artists() {
@@ -13,26 +14,21 @@ export default function Artists() {
   return (
     <section
       id="artister"
-      className="relative py-24 md:py-32 border-t border-line"
+      className="bg-ink py-20 md:py-28 border-t border-line"
       data-testid="artists"
     >
-      <div className="max-w-shell mx-auto px-5 md:px-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div>
-            <Reveal className="overline text-signal mb-4">Mød artisterne</Reveal>
-            <Reveal
-              as="h2"
-              delay={0.05}
-              className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight max-w-2xl leading-[0.98]"
-            >
-              Videoer der viser energien i rummet.
-            </Reveal>
-          </div>
+      <div className="max-w-shell mx-auto px-5 md:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5">
+          <SectionHeader
+            index="05"
+            label="Artister"
+            title="Energien i rummet — på video."
+          />
           <a
             href={links.youtube}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 border border-lineStrong hover:border-bone text-bone font-mono text-xs uppercase tracking-wider px-6 py-3 transition-colors self-start"
+            className="hidden sm:inline-flex items-center gap-2 border border-lineStrong hover:border-bone text-bone font-medium text-sm px-5 py-3 rounded-full transition-colors mb-10 md:mb-14"
             data-testid="artists-youtube-btn"
           >
             <Youtube size={16} /> YouTube
@@ -41,7 +37,7 @@ export default function Artists() {
 
         <div className="grid lg:grid-cols-3 gap-5">
           <Reveal className="lg:col-span-2">
-            <div className="relative aspect-video border border-line overflow-hidden bg-black">
+            <div className="relative aspect-video border border-line rounded-2xl overflow-hidden bg-black">
               <iframe
                 key={current.id}
                 title={current.title}
@@ -51,25 +47,27 @@ export default function Artists() {
                 className="w-full h-full"
               />
             </div>
-            <p className="mt-4 font-display text-xl">{current.title}</p>
+            <p className="mt-4 font-display font-semibold uppercase text-xl tracking-tight">
+              {current.title}
+            </p>
           </Reveal>
 
-          <div className="flex flex-col gap-3 lg:max-h-[520px] lg:overflow-y-auto no-scrollbar pr-1">
+          <div className="flex flex-col gap-3 lg:max-h-[480px] lg:overflow-y-auto no-scrollbar pr-1">
             {videos.map((v) => (
               <button
                 key={v.id}
                 onClick={() => setSelected(v.id)}
-                className={`group flex items-center gap-4 border p-3 text-left transition-colors ${
+                className={`group flex items-center gap-4 border rounded-xl p-3 text-left transition-colors ${
                   v.id === selected
-                    ? "border-signal bg-signal/5"
+                    ? "border-brand bg-brand/5"
                     : "border-line hover:border-lineStrong"
                 }`}
                 data-testid={`video-item-${v.id}`}
               >
-                <div className="relative h-16 w-28 shrink-0 overflow-hidden">
+                <div className="relative h-14 w-24 shrink-0 overflow-hidden rounded-lg">
                   <img src={v.thumb} alt="" className="h-full w-full object-cover" />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Play size={18} className="text-white" />
+                    <Play size={16} className="text-white" />
                   </div>
                 </div>
                 <div className="min-w-0">

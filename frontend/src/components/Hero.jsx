@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Disc3, Music, Star } from "lucide-react";
+import { ArrowUpRight, Disc3, Music } from "lucide-react";
 import { links, asset, stats } from "../lib/data";
 
 const fade = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: 26 },
   show: (i) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.85, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] },
   }),
 };
 
@@ -15,7 +15,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-screen flex flex-col justify-end overflow-hidden"
+      className="relative min-h-[88vh] sm:min-h-screen flex flex-col justify-end overflow-hidden"
       data-testid="hero"
     >
       <video
@@ -27,33 +27,26 @@ export default function Hero() {
         loop
         playsInline
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-ink/40" />
-      <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/40" />
 
-      <div className="absolute -bottom-[2vw] right-2 hidden md:block select-none pointer-events-none">
-        <span className="font-display font-semibold text-[17vw] leading-none text-stroke">
-          BLOWUP
-        </span>
-      </div>
-
-      <div className="relative max-w-shell w-full mx-auto px-5 md:px-10 pb-16 md:pb-24 pt-32">
+      <div className="relative max-w-shell w-full mx-auto px-5 md:px-8 pb-14 sm:pb-20 pt-32">
         <motion.div
           custom={0}
           variants={fade}
           initial="hidden"
           animate="show"
-          className="flex items-center gap-3 overline text-signal mb-6"
+          className="flex items-center gap-2.5 overline text-brand mb-5"
         >
-          <span className="h-2 w-2 rounded-full bg-signal animate-pulseDot" />
+          <span className="h-2 w-2 rounded-full bg-brand animate-pulseDot" />
           Musikstudie i Hedehusene
         </motion.div>
 
-        <h1 className="font-display font-semibold uppercase tracking-tight text-bone text-[15vw] sm:text-7xl lg:text-8xl leading-[0.9] max-w-5xl">
+        <h1 className="font-display font-bold uppercase tracking-tight text-bone text-6xl sm:text-7xl lg:text-8xl leading-[0.9] max-w-4xl">
           <motion.span custom={1} variants={fade} initial="hidden" animate="show" className="block">
             Fra idé til
           </motion.span>
-          <motion.span custom={2} variants={fade} initial="hidden" animate="show" className="block">
-            release-klar <span className="text-signal">sang.</span>
+          <motion.span custom={2} variants={fade} initial="hidden" animate="show" className="block text-brand">
+            release-klar sang.
           </motion.span>
         </h1>
 
@@ -62,10 +55,10 @@ export default function Hero() {
           variants={fade}
           initial="hidden"
           animate="show"
-          className="mt-8 text-ash text-lg md:text-xl max-w-2xl leading-relaxed"
+          className="mt-6 text-ash text-base sm:text-lg max-w-xl leading-relaxed"
         >
           Patrick og teamet hjælper med beat, vokal, coaching, mix og master — så
-          projektet føles skarpt fra første take. DK's varmeste studie.
+          projektet føles skarpt fra første take.
         </motion.p>
 
         <motion.div
@@ -73,26 +66,23 @@ export default function Hero() {
           variants={fade}
           initial="hidden"
           animate="show"
-          className="mt-10 flex flex-wrap gap-3"
+          className="mt-8 flex flex-col sm:flex-row sm:flex-wrap gap-3"
         >
           <a
             href={links.booking}
             target="_blank"
             rel="noreferrer"
-            className="group inline-flex items-center gap-2 bg-signal hover:bg-signalDeep text-white font-mono text-sm uppercase tracking-wider px-7 py-4 transition-colors"
+            className="group inline-flex w-full sm:w-auto justify-center items-center gap-2 bg-brand hover:bg-brandDark text-ink font-semibold text-base px-7 py-4 rounded-full transition-colors"
             data-testid="hero-book-btn"
           >
             Book din session
-            <ArrowUpRight
-              size={18}
-              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-            />
+            <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
           <a
             href={links.readyBeat}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 border border-lineStrong hover:border-bone text-bone font-mono text-sm uppercase tracking-wider px-7 py-4 transition-colors"
+            className="inline-flex w-full sm:w-auto justify-center items-center gap-2 border border-lineStrong hover:border-bone text-bone font-medium text-base px-7 py-4 rounded-full transition-colors"
             data-testid="hero-beat-btn"
           >
             <Disc3 size={18} /> Køb færdigt beat
@@ -101,7 +91,7 @@ export default function Hero() {
             href={links.customBeat}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 text-ash hover:text-bone font-mono text-sm uppercase tracking-wider px-4 py-4 transition-colors"
+            className="inline-flex w-full sm:w-auto justify-center items-center gap-2 text-ash hover:text-bone font-medium text-base px-5 py-4 transition-colors"
             data-testid="hero-custom-btn"
           >
             <Music size={18} /> Custom beat
@@ -113,18 +103,11 @@ export default function Hero() {
           variants={fade}
           initial="hidden"
           animate="show"
-          className="mt-14 flex flex-wrap gap-3"
+          className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-line pt-6"
         >
           {stats.map((s) => (
-            <div
-              key={s.label}
-              className="glass border border-line px-5 py-3 flex items-center gap-2"
-              data-testid={`hero-stat-${s.label}`}
-            >
-              <span className="font-display text-xl text-bone">{s.value}</span>
-              {s.value === "5.0" && (
-                <Star size={13} className="text-signal" fill="currentColor" />
-              )}
+            <div key={s.label} className="flex items-baseline gap-2" data-testid={`hero-stat-${s.label}`}>
+              <span className="font-display font-bold text-2xl text-bone">{s.value}</span>
               <span className="overline text-ash">{s.label}</span>
             </div>
           ))}

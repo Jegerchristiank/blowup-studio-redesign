@@ -65,7 +65,7 @@ async def create_contact(payload: ContactCreate):
     return {"success": True, "id": str(result.inserted_id)}
 
 
-@api.get("/contacts", response_model=List[Contact])
+@api.get("/contacts", response_model=List[Contact], response_model_by_alias=False)
 async def list_contacts():
     docs = await db.contacts.find().sort("created_at", -1).to_list(200)
     return [Contact.model_validate(d) for d in docs]

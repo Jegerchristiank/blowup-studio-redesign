@@ -7,7 +7,11 @@ export default function Marquee({
   fast = false,
 }) {
   const row = [...items, ...items];
-  const anim = reverse ? "animate-marqueeReverse" : fast ? "animate-marqueeFast" : "animate-marquee";
+  const anim = reverse
+    ? "animate-marqueeReverse"
+    : fast
+    ? "animate-marqueeFast"
+    : "animate-marquee";
   return (
     <div
       className={`overflow-hidden select-none marquee-pause ${
@@ -17,7 +21,7 @@ export default function Marquee({
     >
       <div className={`marquee-track flex w-max items-center ${anim} ${yellow ? "py-3.5" : "py-2"}`}>
         {row.map((t, i) => (
-          <span key={i} className="flex items-center">
+          <span key={`${t}-${i}`} className="flex items-center">
             <span
               className={`font-display font-bold uppercase px-5 ${
                 yellow ? "text-2xl sm:text-3xl" : "text-3xl sm:text-5xl text-stroke"

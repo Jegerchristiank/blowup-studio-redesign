@@ -9,6 +9,30 @@ const socials = [
   { label: "Discord", href: links.discord, icon: MessageCircle },
 ];
 
+function SocialLinks() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      {socials.map((s) => {
+        const Icon = s.icon;
+        return (
+          <Magnetic key={s.label}>
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noreferrer"
+              className="h-12 w-12 rounded-full border border-line hover:border-brand hover:text-brand text-bone flex items-center justify-center transition-colors"
+              aria-label={s.label}
+              data-testid={`social-${s.label.toLowerCase()}`}
+            >
+              <Icon size={20} />
+            </a>
+          </Magnetic>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Footer() {
   return (
     <footer className="bg-ink border-t border-line overflow-hidden" data-testid="footer">
@@ -25,33 +49,12 @@ export default function Footer() {
               {links.address} · CVR {links.cvr}
             </p>
           </div>
-
-          <div className="flex flex-wrap gap-3">
-            {socials.map((s) => {
-              const Icon = s.icon;
-              return (
-                <Magnetic key={s.label}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="h-12 w-12 rounded-full border border-line hover:border-brand hover:text-brand text-bone flex items-center justify-center transition-colors"
-                    aria-label={s.label}
-                    data-testid={`social-${s.label.toLowerCase()}`}
-                  >
-                    <Icon size={20} />
-                  </a>
-                </Magnetic>
-              );
-            })}
-          </div>
+          <SocialLinks />
         </div>
       </div>
 
-      <div className="relative">
-        <div className="leading-[0.8] text-center select-none px-2">
-          <span className="font-display font-bold uppercase text-[22vw] text-stroke">BLOWUP</span>
-        </div>
+      <div className="leading-[0.8] text-center select-none px-2">
+        <span className="font-display font-bold uppercase text-[22vw] text-stroke">BLOWUP</span>
       </div>
 
       <div className="border-t border-line">

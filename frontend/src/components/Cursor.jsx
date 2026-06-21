@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
+const RING_SPRING = { stiffness: 350, damping: 28, mass: 0.5 };
+const INTERACTIVE = "a, button, [data-cursor], input, textarea, select";
+
 export default function Cursor() {
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const ringX = useSpring(x, { stiffness: 350, damping: 28, mass: 0.5 });
-  const ringY = useSpring(y, { stiffness: 350, damping: 28, mass: 0.5 });
+  const ringX = useSpring(x, RING_SPRING);
+  const ringY = useSpring(y, RING_SPRING);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -14,12 +17,10 @@ export default function Cursor() {
       y.set(e.clientY);
     };
     const over = (e) => {
-      if (e.target.closest("a, button, [data-cursor], input, textarea, select"))
-        setActive(true);
+      if (e.target.closest(INTERACTIVE)) setActive(true);
     };
     const out = (e) => {
-      if (e.target.closest("a, button, [data-cursor], input, textarea, select"))
-        setActive(false);
+      if (e.target.closest(INTERACTIVE)) setActive(false);
     };
     window.addEventListener("mousemove", move);
     document.addEventListener("mouseover", over);
@@ -29,7 +30,8 @@ export default function Cursor() {
       document.removeEventListener("mouseover", over);
       document.removeEventListener("mouseout", out);
     };
-  }, [x, y]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

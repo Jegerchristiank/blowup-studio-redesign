@@ -24,29 +24,28 @@ function Card({ r }) {
   );
 }
 
-export default function Reviews() {
+function Row({ reverse }) {
   const row = [...reviews, ...reviews];
+  return (
+    <div className="marquee-pause overflow-hidden">
+      <div className={`marquee-track flex w-max gap-4 ${reverse ? "animate-marqueeReverse" : "animate-marquee"}`}>
+        {row.map((r, i) => (
+          <Card key={`${r.name}-${i}`} r={r} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function Reviews() {
   return (
     <section className="bg-surface py-20 md:py-28 border-t border-line overflow-hidden" data-testid="reviews">
       <div className="max-w-shell mx-auto px-5 md:px-8">
         <SectionHeader index="06" label="Ord" title="Hvad kunderne siger." />
       </div>
-
       <div className="space-y-4">
-        <div className="marquee-pause overflow-hidden">
-          <div className="marquee-track flex w-max gap-4 animate-marquee">
-            {row.map((r, i) => (
-              <Card key={`a-${i}`} r={r} />
-            ))}
-          </div>
-        </div>
-        <div className="marquee-pause overflow-hidden">
-          <div className="marquee-track flex w-max gap-4 animate-marqueeReverse">
-            {row.map((r, i) => (
-              <Card key={`b-${i}`} r={r} />
-            ))}
-          </div>
-        </div>
+        <Row />
+        <Row reverse />
       </div>
     </section>
   );

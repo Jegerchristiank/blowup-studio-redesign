@@ -1,7 +1,60 @@
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import Magnetic from "./Magnetic";
+import { scrollToHash } from "../lib/scroll";
 import { links, nav, asset } from "../lib/data";
+
+function DesktopNav({ onNavigate }) {
+  return (
+    <nav className="hidden lg:flex items-center gap-9">
+      {nav.map((item) => (
+        <a
+          key={item.href}
+          href={item.href}
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigate(item.href);
+          }}
+          className="overline text-ash hover:text-bone transition-colors"
+          data-testid={`nav-${item.label.toLowerCase()}`}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+function MobileMenu({ onNavigate }) {
+  return (
+    <div className="lg:hidden glass border-t border-line" data-testid="mobile-menu">
+      <div className="px-5 py-3 flex flex-col">
+        {nav.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate(item.href);
+            }}
+            className="py-3 font-display font-semibold uppercase text-2xl border-b border-line/70"
+            data-testid={`mobile-nav-${item.label.toLowerCase()}`}
+          >
+            {item.label}
+          </a>
+        ))}
+        <a
+          href={links.booking}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-4 mb-2 inline-flex justify-center items-center gap-2 bg-brand text-ink font-semibold px-5 py-3.5 rounded-full"
+        >
+          Book session <ArrowUpRight size={16} />
+        </a>
+      </div>
+    </div>
+  );
+}
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -12,13 +65,12 @@ export default function Header() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const go = (e, href) => {
-    e.preventDefault();
+  const navigate = (href) => {
     setOpen(false);
-    if (window.lenis) window.lenis.scrollTo(href, { offset: -70 });
-    else document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    scrollToHash(href);
   };
 
   return (
@@ -29,26 +81,22 @@ export default function Header() {
       data-testid="site-header"
     >
       <div className="max-w-shell mx-auto px-5 md:px-8 flex items-center justify-between">
-        <a href="#top" onClick={(e) => go(e, "#top")} className="flex items-center gap-2.5" data-testid="brand-link">
+        <a
+          href="#top"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("#top");
+          }}
+          className="flex items-center gap-2.5"
+          data-testid="brand-link"
+        >
           <img src={asset("blowup-icon.svg")} alt="BLOWUP" className="h-7 w-7" />
           <span className="font-display font-bold uppercase text-xl tracking-wide">
             BLOW<span className="text-brand">UP</span>
           </span>
         </a>
 
-        <nav className="hidden lg:flex items-center gap-9">
-          {nav.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={(e) => go(e, item.href)}
-              className="overline text-ash hover:text-bone transition-colors"
-              data-testid={`nav-${item.label.toLowerCase()}`}
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+        <DesktopNav onNavigate={navigate} />
 
         <div className="flex items-center gap-3">
           <Magnetic className="hidden sm:block">
@@ -73,31 +121,7 @@ export default function Header() {
         </div>
       </div>
 
-      {open && (
-        <div className="lg:hidden glass border-t border-line" data-testid="mobile-menu">
-          <div className="px-5 py-3 flex flex-col">
-            {nav.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={(e) => go(e, item.href)}
-                className="py-3 font-display font-semibold uppercase text-2xl border-b border-line/70"
-                data-testid={`mobile-nav-${item.label.toLowerCase()}`}
-              >
-                {item.label}
-              </a>
-            ))}
-            <a
-              href={links.booking}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-4 mb-2 inline-flex justify-center items-center gap-2 bg-brand text-ink font-semibold px-5 py-3.5 rounded-full"
-            >
-              Book session <ArrowUpRight size={16} />
-            </a>
-          </div>
-        </div>
-      )}
+      {open && <MobileMenu onNavigate={navigate} />}
     </header>
   );
 }

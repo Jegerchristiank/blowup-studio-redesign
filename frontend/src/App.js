@@ -33,6 +33,7 @@ export default function App() {
       lenis.destroy();
       delete window.lenis;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

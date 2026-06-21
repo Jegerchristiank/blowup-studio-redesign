@@ -21,6 +21,7 @@ BLOWUP studio is a music recording studio in Hedehusene, Denmark (producer Patri
 - Assets: `/app/frontend/public/assets/site/` (studio video, gallery, patrick, youtube thumbs, logo). Original Vite source preserved in `/app/.legacy_vite/`.
 
 ## Implemented (2026-06-21)
+- Preloader "fly-through-W" intro: counter 0–100, then the BLOWUP wordmark rushes/blurs toward the viewer and a centered **W-shaped SVG cutout** scales up (accelerating ease + motion blur), revealing the live site *through* the growing W. Honors `prefers-reduced-motion` (skips the zoom). See `src/components/Preloader.jsx`.
 - Interactive single-page experience:
   - Preloader (counter + BLOWUP reveal), custom magnetic cursor (desktop), scroll-progress bar, grain overlay, Lenis smooth scroll.
   - Hero: video bg, kinetic headline "Fra idé til hit.", sound toggle w/ equalizer, magnetic CTA.

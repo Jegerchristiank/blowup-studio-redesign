@@ -63,7 +63,7 @@ export default function Header() {
             </a>
           </Magnetic>
           <button
-            className="lg:hidden text-bone p-1"
+            className="lg:hidden text-bone -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
             onClick={() => setOpen((v) => !v)}
             aria-label="Menu"
             data-testid="mobile-menu-toggle"

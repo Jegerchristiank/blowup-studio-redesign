@@ -4,3 +4,10 @@ dist/
 *.tsbuildinfo
 source-site/
 verification/
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials

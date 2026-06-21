@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const DURATION = 1000; // counter duration (ms)
 const ACCEL = [0.5, 0, 0.75, 0]; // calm morph, then rushes through
+const MOBILE_QUERY = "(max-width: 767px)";
 
 export default function Preloader() {
   const [count, setCount] = useState(0);
@@ -48,6 +49,8 @@ export default function Preloader() {
   useEffect(() => {
     const reduce =
       window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mobile = window.matchMedia && window.matchMedia(MOBILE_QUERY).matches;
+    const skipZoom = reduce || mobile;
     let raf;
     const start = performance.now();
     const tick = (now) => {
@@ -55,7 +58,7 @@ export default function Preloader() {
       const eased = 1 - Math.pow(1 - t, 3);
       setCount(Math.round(eased * 100));
       if (t < 1) raf = requestAnimationFrame(tick);
-      else setPhase(reduce ? "done" : "zoom");
+      else setPhase(skipZoom ? "done" : "zoom");
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);

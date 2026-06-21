@@ -1,19 +1,22 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
+import Preloader from "./components/Preloader";
+import Cursor from "./components/Cursor";
+import ScrollProgress from "./components/ScrollProgress";
 import Noise from "./components/Noise";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Marquee from "./components/Marquee";
-import Studio from "./components/Studio";
-import Process from "./components/Process";
-import Pricing from "./components/Pricing";
+import Stats from "./components/Stats";
+import Services from "./components/Services";
+import Configurator from "./components/Configurator";
 import Releases from "./components/Releases";
 import Artists from "./components/Artists";
 import Gallery from "./components/Gallery";
 import Reviews from "./components/Reviews";
 import Contact from "./components/Contact";
-import Social from "./components/Social";
 import Footer from "./components/Footer";
+import { marqueeWords } from "./lib/data";
 
 export default function App() {
   useEffect(() => {
@@ -34,20 +37,22 @@ export default function App() {
 
   return (
     <div className="bg-ink text-bone min-h-screen relative">
+      <Preloader />
+      <Cursor />
+      <ScrollProgress />
       <Noise />
       <Header />
       <main>
         <Hero />
-        <Marquee />
-        <Studio />
-        <Process />
-        <Pricing />
+        <Marquee items={marqueeWords} yellow />
+        <Stats />
+        <Services />
+        <Configurator />
         <Releases />
         <Artists />
         <Gallery />
         <Reviews />
         <Contact />
-        <Social />
       </main>
       <Footer />
     </div>

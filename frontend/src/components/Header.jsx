@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import Magnetic from "./Magnetic";
 import { links, nav, asset } from "../lib/data";
 
 export default function Header() {
@@ -22,25 +23,20 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? "py-3 glass border-b border-line" : "py-4 sm:py-5 bg-transparent"
+      className={`fixed top-0 inset-x-0 z-[110] transition-all duration-300 ${
+        scrolled ? "py-3 glass border-b border-line" : "py-4 sm:py-5"
       }`}
       data-testid="site-header"
     >
       <div className="max-w-shell mx-auto px-5 md:px-8 flex items-center justify-between">
-        <a
-          href="#top"
-          onClick={(e) => go(e, "#top")}
-          className="flex items-center gap-2.5"
-          data-testid="brand-link"
-        >
+        <a href="#top" onClick={(e) => go(e, "#top")} className="flex items-center gap-2.5" data-testid="brand-link">
           <img src={asset("blowup-icon.svg")} alt="BLOWUP" className="h-7 w-7" />
           <span className="font-display font-bold uppercase text-xl tracking-wide">
-            BLOWUP <span className="text-brand">studio</span>
+            BLOW<span className="text-brand">UP</span>
           </span>
         </a>
 
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-9">
           {nav.map((item) => (
             <a
               key={item.href}
@@ -55,15 +51,17 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <a
-            href={links.booking}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 bg-brand hover:bg-brandDark text-ink font-semibold text-sm px-5 py-2.5 rounded-full transition-colors"
-            data-testid="header-book-btn"
-          >
-            Book session <ArrowUpRight size={16} />
-          </a>
+          <Magnetic className="hidden sm:block">
+            <a
+              href={links.booking}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 bg-brand hover:bg-brandDark text-ink font-semibold text-sm px-5 py-2.5 rounded-full transition-colors"
+              data-testid="header-book-btn"
+            >
+              Book session <ArrowUpRight size={16} />
+            </a>
+          </Magnetic>
           <button
             className="lg:hidden text-bone p-1"
             onClick={() => setOpen((v) => !v)}

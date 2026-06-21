@@ -1,24 +1,50 @@
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Disc3, Music } from "lucide-react";
-import { links, asset, stats } from "../lib/data";
+import { ArrowDown, Volume2, VolumeX } from "lucide-react";
+import Magnetic from "./Magnetic";
+import { links, asset } from "../lib/data";
 
-const fade = {
-  hidden: { opacity: 0, y: 26 },
-  show: (i) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] },
-  }),
+function Equalizer({ active }) {
+  return (
+    <div className="flex items-end gap-[3px] h-4">
+      {[0, 1, 2, 3].map((i) => (
+        <motion.span
+          key={i}
+          className="eq-bar"
+          animate={active ? { height: ["28%", "100%", "45%", "85%", "28%"] } : { height: "28%" }}
+          transition={{ duration: 0.9 + i * 0.14, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+const word = {
+  hidden: { y: "110%" },
+  show: (i) => ({ y: 0, transition: { duration: 0.9, delay: 0.15 + i * 0.1, ease: [0.16, 1, 0.3, 1] } }),
 };
 
 export default function Hero() {
+  const videoRef = useRef(null);
+  const [muted, setMuted] = useState(true);
+
+  const toggleSound = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setMuted(v.muted);
+    if (!v.muted) v.play().catch(() => {});
+  };
+
+  const goTo = (e, href) => {
+    e.preventDefault();
+    if (window.lenis) window.lenis.scrollTo(href, { offset: -40 });
+  };
+
   return (
-    <section
-      id="top"
-      className="relative min-h-[88vh] sm:min-h-screen flex flex-col justify-end overflow-hidden"
-      data-testid="hero"
-    >
+    <section id="top" className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-end overflow-hidden">
       <video
+        ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"
         src={asset("studio-hero.mp4")}
         poster={asset("gallery-1.jpg")}
@@ -27,91 +53,68 @@ export default function Hero() {
         loop
         playsInline
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-ink/30" />
 
-      <div className="relative max-w-shell w-full mx-auto px-5 md:px-8 pb-14 sm:pb-20 pt-32">
+      <div className="relative max-w-shell w-full mx-auto px-5 md:px-8 pb-12 sm:pb-16 pt-32">
         <motion.div
-          custom={0}
-          variants={fade}
-          initial="hidden"
-          animate="show"
-          className="flex items-center gap-2.5 overline text-brand mb-5"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="overline text-brand mb-5 flex items-center gap-2.5"
         >
           <span className="h-2 w-2 rounded-full bg-brand animate-pulseDot" />
-          Musikstudie i Hedehusene
+          Musikstudie · Hedehusene
         </motion.div>
 
-        <h1 className="font-display font-bold uppercase tracking-tight text-bone text-6xl sm:text-7xl lg:text-8xl leading-[0.9] max-w-4xl">
-          <motion.span custom={1} variants={fade} initial="hidden" animate="show" className="block">
-            Fra idé til
-          </motion.span>
-          <motion.span custom={2} variants={fade} initial="hidden" animate="show" className="block text-brand">
-            release-klar sang.
-          </motion.span>
+        <h1 className="font-display font-bold uppercase tracking-tight text-bone leading-[0.85] text-7xl sm:text-8xl lg:text-[9rem]">
+          <span className="block overflow-hidden">
+            <motion.span custom={0} variants={word} initial="hidden" animate="show" className="block">
+              Fra idé
+            </motion.span>
+          </span>
+          <span className="block overflow-hidden">
+            <motion.span custom={1} variants={word} initial="hidden" animate="show" className="block">
+              til <span className="text-brand">hit.</span>
+            </motion.span>
+          </span>
         </h1>
 
-        <motion.p
-          custom={3}
-          variants={fade}
-          initial="hidden"
-          animate="show"
-          className="mt-6 text-ash text-base sm:text-lg max-w-xl leading-relaxed"
-        >
-          Patrick og teamet hjælper med beat, vokal, coaching, mix og master — så
-          projektet føles skarpt fra første take.
-        </motion.p>
+        <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-5">
+          <Magnetic>
+            <a
+              href={links.booking}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex w-full sm:w-auto justify-center items-center gap-2 bg-brand hover:bg-brandDark text-ink font-semibold text-base px-8 py-4 rounded-full transition-colors"
+              data-testid="hero-book-btn"
+            >
+              Book din session
+            </a>
+          </Magnetic>
+          <a
+            href="#lyt"
+            onClick={(e) => goTo(e, "#lyt")}
+            className="inline-flex items-center justify-center gap-2 text-bone/90 hover:text-brand font-medium transition-colors"
+            data-testid="hero-listen-btn"
+          >
+            Hør udgivelser <ArrowDown size={16} />
+          </a>
+        </div>
+      </div>
 
-        <motion.div
-          custom={4}
-          variants={fade}
-          initial="hidden"
-          animate="show"
-          className="mt-8 flex flex-col sm:flex-row sm:flex-wrap gap-3"
+      <div className="relative max-w-shell w-full mx-auto px-5 md:px-8 pb-8 flex items-center justify-between">
+        <button
+          onClick={toggleSound}
+          className="glass border border-line rounded-full pl-3 pr-4 py-2 flex items-center gap-3 text-sm text-bone hover:border-brand transition-colors"
+          data-testid="hero-sound-toggle"
         >
-          <a
-            href={links.booking}
-            target="_blank"
-            rel="noreferrer"
-            className="group inline-flex w-full sm:w-auto justify-center items-center gap-2 bg-brand hover:bg-brandDark text-ink font-semibold text-base px-7 py-4 rounded-full transition-colors"
-            data-testid="hero-book-btn"
-          >
-            Book din session
-            <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </a>
-          <a
-            href={links.readyBeat}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex w-full sm:w-auto justify-center items-center gap-2 border border-lineStrong hover:border-bone text-bone font-medium text-base px-7 py-4 rounded-full transition-colors"
-            data-testid="hero-beat-btn"
-          >
-            <Disc3 size={18} /> Køb færdigt beat
-          </a>
-          <a
-            href={links.customBeat}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex w-full sm:w-auto justify-center items-center gap-2 text-ash hover:text-bone font-medium text-base px-5 py-4 transition-colors"
-            data-testid="hero-custom-btn"
-          >
-            <Music size={18} /> Custom beat
-          </a>
-        </motion.div>
-
-        <motion.div
-          custom={5}
-          variants={fade}
-          initial="hidden"
-          animate="show"
-          className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-line pt-6"
-        >
-          {stats.map((s) => (
-            <div key={s.label} className="flex items-baseline gap-2" data-testid={`hero-stat-${s.label}`}>
-              <span className="font-display font-bold text-2xl text-bone">{s.value}</span>
-              <span className="overline text-ash">{s.label}</span>
-            </div>
-          ))}
-        </motion.div>
+          <span className="text-brand">{muted ? <VolumeX size={16} /> : <Volume2 size={16} />}</span>
+          <Equalizer active={!muted} />
+          <span className="overline">{muted ? "Lyd fra" : "Lyd til"}</span>
+        </button>
+        <span className="hidden sm:flex items-center gap-2 overline text-ash">
+          Scroll <ArrowDown size={14} className="animate-bounce" />
+        </span>
       </div>
     </section>
   );

@@ -3,11 +3,29 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const DURATION = 1000; // counter duration (ms)
 const ACCEL = [0.5, 0, 0.75, 0]; // calm morph, then rushes through
-const MOBILE_QUERY = "(max-width: 767px)";
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const MOBILE_QUERY = [
+  "(max-width: 767px)",
+  "(hover: none) and (pointer: coarse)",
+  "(hover: none) and (any-pointer: coarse)",
+].join(", ");
+
+function matchesMedia(query) {
+  return typeof window !== "undefined" && window.matchMedia && window.matchMedia(query).matches;
+}
+
+function shouldSkipZoom() {
+  if (matchesMedia(REDUCED_MOTION_QUERY) || matchesMedia(MOBILE_QUERY)) return true;
+  if (typeof window === "undefined" || typeof navigator === "undefined") return false;
+
+  const shortSide = Math.min(window.innerWidth || 0, window.innerHeight || 0);
+  return navigator.maxTouchPoints > 0 && shortSide <= 767;
+}
 
 export default function Preloader() {
   const [count, setCount] = useState(0);
   const [phase, setPhase] = useState("loading"); // loading | zoom | done
+  const [skipIntroZoom, setSkipIntroZoom] = useState(shouldSkipZoom);
   const [dims] = useState(() => ({
     w: typeof window !== "undefined" ? window.innerWidth : 1280,
     h: typeof window !== "undefined" ? window.innerHeight : 800,
@@ -22,6 +40,8 @@ export default function Preloader() {
 
   // Measure the exact position of the W inside "BLOWUP"
   useEffect(() => {
+    if (skipIntroZoom) return undefined;
+
     let cancelled = false;
     const measure = () => {
       const t = textRef.current;
@@ -43,14 +63,21 @@ export default function Preloader() {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skipIntroZoom]);
+
+  useEffect(() => {
+    const updateSkipIntroZoom = () => setSkipIntroZoom(shouldSkipZoom());
+    updateSkipIntroZoom();
+    window.addEventListener("resize", updateSkipIntroZoom);
+    return () => window.removeEventListener("resize", updateSkipIntroZoom);
   }, []);
+
+  useEffect(() => {
+    if (phase === "zoom" && skipIntroZoom) setPhase("done");
+  }, [phase, skipIntroZoom]);
 
   // Counter 0 -> 100, then trigger the zoom
   useEffect(() => {
-    const reduce =
-      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const mobile = window.matchMedia && window.matchMedia(MOBILE_QUERY).matches;
-    const skipZoom = reduce || mobile;
     let raf;
     const start = performance.now();
     const tick = (now) => {
@@ -58,7 +85,7 @@ export default function Preloader() {
       const eased = 1 - Math.pow(1 - t, 3);
       setCount(Math.round(eased * 100));
       if (t < 1) raf = requestAnimationFrame(tick);
-      else setPhase(skipZoom ? "done" : "zoom");
+      else setPhase(shouldSkipZoom() ? "done" : "zoom");
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
@@ -67,7 +94,7 @@ export default function Preloader() {
 
   const originX = wpos ? wpos.x : cx;
   const originY = wpos ? wpos.y : cy;
-  const zooming = phase === "zoom";
+  const zooming = phase === "zoom" && !skipIntroZoom;
 
   return (
     <AnimatePresence>
@@ -86,7 +113,11 @@ export default function Preloader() {
             preserveAspectRatio="xMidYMid slice"
             style={{ transformOrigin: `${originX}px ${originY}px` }}
             initial={{ scale: 1, filter: "blur(0px)" }}
-            animate={zooming ? { scale: zoomScale, filter: "blur(5px)" } : { scale: 1 }}
+            animate={
+              zooming
+                ? { scale: zoomScale, filter: "blur(5px)" }
+                : { scale: 1, filter: "blur(0px)" }
+            }
             transition={{ duration: 1.0, ease: ACCEL }}
             onAnimationComplete={() => {
               if (zooming) setPhase("done");
@@ -95,7 +126,7 @@ export default function Preloader() {
             <defs>
               <mask id="blowup-w-hole">
                 <rect width={dims.w} height={dims.h} fill="white" />
-                {wpos && (
+                {!skipIntroZoom && wpos && (
                   <text
                     x={wpos.x}
                     y={wpos.y}
